@@ -8,7 +8,7 @@
 dotnet add package Microsoft.EntityFrameworkCore.Sqlite
 ```
 
-	
+​	
 
 2. MySQL
 
@@ -96,7 +96,7 @@ Tips: [reference](https://docs.microsoft.com/en-us/ef/ef6/modeling/code-first/da
 
 |- 外键:`[ForeignKey("otherTable")]`
 
-
+[All annotations](https://docs.microsoft.com/en-us/dotnet/api/system.componentmodel.dataannotations.stringlengthattribute?redirectedfrom=MSDN&view=netframework-4.7.2)
 
 ```c#
 public class MobileDbContext : DbContext
