@@ -10,6 +10,8 @@
 
    |- [Parameter Binding](Parameter Binding.md)
 
+   |- [LINQ](LINQ.md)
+
 2. [webapi](webapi.md)
 
    |- JWT intergation 
