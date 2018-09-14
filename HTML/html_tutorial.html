@@ -1,0 +1,446 @@
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="highlight/styles/default.css">
+
+    <title>FIT 5032 Tutorial 02 - html and css</title>
+</head>
+
+<body>
+    <div class="container">
+        <img src="img/word_title.png" class="img-fluid" alt="Responsive image">
+        <h1>FIT 5032 Tutorial 02</h1>
+        <div class="alert alert-primary" role="alert">
+            <h5 id="content">Content:</h5>
+            <ol>
+                <li><a href="MVC_tutorial.html">dotnet framework - Route and MVC</a></li>
+                <li>HTML 和 CSS (cont.)</li>
+                    <ul>
+                        <li><a href="#htags" >h tags</a></li>
+                        <li><a href="#input" >input </a></li>
+                        <li><a href="#atag" >a tag</a></li>
+                        <li><a href="#select" >select</a></li>
+                        <li><a href="#image" >image</a></li>
+                        <li><a href="#CSS的引用" >CSS的引用</a></li>
+                        <li><a href="#font" >font</a></li>
+                        <li><a href="#box-model" >box-model</a></li>
+                        <li><a href="#使用Bootstrap美化" >使用Bootstrap美化</a></li>
+                    </ul>
+                <li> <a href="javascript_tutorial.html" >JavaScript Basic</a></li>
+            </ol>
+        </div>
+
+
+
+
+        <h4 id="c1">1. HTML 和 CSS (cont.)</h4>
+        <h5 id="htags"> <kbd>h</kbd> tags: </h5>
+        <div class="card">
+            <div class="card-body">
+
+                <div class="alert alert-dark" role="alert">
+                    标题, 从h1 -> h6,字体依次减小
+                </div>
+                Demo:
+                <div class="row">
+                    <pre class="col-md-6 col-sm-6">
+            <code class="html">
+                <h1> H1 Tags </h1>
+                <h2> H2 Tags </h2>
+                <h3> H3 Tags </h3>
+                <h4> H4 Tags </h4>
+                <h5> H5 Tags </h5>
+                <h6> H6 Tags </h6>
+            </code>
+        </pre>
+                    <div class="alert alert-dark col-md-6 col-sm-6" role="alert">
+                        <div>
+                            <h1> H1 Tags </h1>
+                            <h2> H2 Tags </h2>
+                            <h3> H3 Tags </h3>
+                            <h4> H4 Tags </h4>
+                            <h5> H5 Tags </h5>
+                            <h6> H6 Tags </h6>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <br><br>
+        <h5 id="input"><kbd>input</kbd> (<a href="https://www.w3schools.com/tags/tag_input.asp">document</a>) </h5>
+        <div class="card">
+            <div class="card-body">
+                <div class="alert alert-dark" role="alert">
+                    输入控件, 包括很多种, 以 type 属性区分
+                </div>
+                Demo:
+                <li>Button</li>
+                <div class="row">
+                    <pre class="col-md-6 col-sm-6"><code class="html">
+                        <input type="submit" />
+                            </code></pre>
+                    <div class="alert alert-dark col-md-6 col-sm-6" role="alert">
+                        <input type="submit" />
+                    </div>
+                </div>
+
+                <li>check box</li>
+                <div class="row">
+                    <pre class="col-md-6 col-sm-6"><code class="html">
+                        <input type="checkbox" />
+                        <input type="checkbox" />
+                        <input type="checkbox" />
+                            </code></pre>
+                    <div class="alert alert-dark col-md-6 col-sm-6" role="alert">
+                        <input type="checkbox" />
+                        <input type="checkbox" />
+                        <input type="checkbox" />
+                    </div>
+                </div>
+
+
+                <li>file</li>
+                <div class="row">
+                    <pre class="col-md-6 col-sm-6"><code class="html">
+                            <input type="file" />
+                            </code></pre>
+                    <div class="alert alert-dark col-md-6 col-sm-6" role="alert">
+                        <input type="file" />
+                    </div>
+                </div>
+
+                <li>number</li>
+                <div class="row">
+                    <pre class="col-md-6 col-sm-6"><code class="html">
+                            <input type="number" step=2  max=10 min=2 />
+                            </code></pre>
+                    <div class="alert alert-dark col-md-6 col-sm-6" role="alert">
+                        <p>使用<kbd>step</kbd>属性可以指定每次+/-的步长</p>
+                        <p>使用<kbd>max/min</kbd>属性可以指定+/-操作可以达到的最大/小值</p>
+                        <input type="number" step=2 max=10 min=2 class="col-md-6 col-sm-6" />
+                    </div>
+                </div>
+
+                <li>password</li>
+                <div class="row">
+                    <pre class="col-md-6 col-sm-6"><code class="html">
+                            <input type="password" />
+                            </code></pre>
+                    <div class="alert alert-dark col-md-6 col-sm-6" role="alert">
+                        <input type="password" />
+                    </div>
+                </div>
+
+                <li>radio</li>
+                <div class="row">
+                    <pre class="col-md-6 col-sm-6"><code class="html">
+                            <input name="group" type="radio" value="radio01" />
+                            <input name="group" type="radio" />
+                            <input name="group" type="radio" />
+                            </code></pre>
+                    <div class="alert alert-dark col-md-6 col-sm-6" role="alert">
+                        <p>使用<kbd>name</kbd>属性可以让radio 在group中N选1</p>
+                        <input name="group" type="radio" /> <br>
+                        <input name="group" type="radio" /> <br>
+                        <input name="group" type="radio" /> <br>
+                    </div>
+                </div>
+
+                <li>range</li>
+                <div class="row">
+                    <pre class="col-md-6 col-sm-6"><code class="html">
+                            <input type="range" step=10 min=-100 max=100 oninput="rangeChange(this.value)"/>
+                            
+                            <!-- to show the value of range, leave the code here and we will discuss later -->
+                            <p id="show_range"></p>
+                            <script>
+                                function rangeChange(value) {
+                                    $('#show_range').html(value);
+                                }
+                            </script>
+                            </code></pre>
+                    <div class="alert alert-dark col-md-6 col-sm-6" role="alert">
+                        <p>使用<kbd>step</kbd>属性可以指定每次+/-的步长</p>
+                        <p>使用<kbd>max/min</kbd>属性可以指定+/-操作可以达到的最大/小值</p>
+                        <input type="range" step=10 min=-100 max=100 oninput="rangeChange(this.value)" />
+                        <p id="show_range">0</p>
+                        <script>
+                            function rangeChange(value) {
+                                $('#show_range').html(value);
+                            }
+                        </script>
+                    </div>
+                </div>
+
+                <li>text</li>
+                <div class="row">
+                    <pre class="col-md-6 col-sm-6"><code class="html">
+                            <input type="text" />
+                            </code></pre>
+                    <div class="alert alert-dark col-md-6 col-sm-6" role="alert">
+                        <input type="text" />
+                    </div>
+                </div>
+
+
+                <li>textarea</li>
+                <div class="row">
+                    <pre class="col-md-6 col-sm-6"><code class="html">
+                            <!-- using cols and rows to set the size of textarea -->
+                            <textarea cols=12 rows=3 ></textarea>
+                            </code></pre>
+                    <div class="alert alert-dark col-md-6 col-sm-6" role="alert">
+                        <p>使用<kbd>cols</kbd>和<kbd>rows</kbd>属性可以指定textarea的长宽</p>
+                        <textarea cols=12 rows=3></textarea>
+                    </div>
+                </div>
+
+                <div class="row">
+
+                </div>
+            </div>
+        </div>
+
+
+        <br><br>
+        <h5 id="atag"> <kbd>a</kbd> tag </h5>
+        <div class="card">
+            <div class="card-body">
+                <div class="alert alert-dark" role="alert">
+                    Link,可以是当前页面的(用相应控件的id做地址), 也可以是外部网页(使用网页的URL做地址)
+                </div>
+                <li>Demo</li>
+                <div class="row">
+                    <pre class="col-md-6 col-sm-6"><code class="html">
+                            <a href="https://www.google.com"> google </a>
+                            <a href="#content"> 内部,目录 </a>
+                            </code></pre>
+                    <div class="alert alert-dark col-md-6 col-sm-6" role="alert">
+
+                        <a href="http://www.google.com"> google(本页面打开) </a><br>
+                        <p>使用<kbd>target='_blank'</kbd>属性可以设定在新的标签中打开Link</p>
+                        <a href="http://www.google.com" target="_blank"> google(新标签打开) </a><br>
+                        <a href="#content"> 内部,目录 </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br><br>
+        <h5 id="select"> <kbd>select</kbd> </h5>
+        <div class="card">
+            <div class="card-body">
+                <div class="alert alert-dark" role="alert">
+                    下拉框(单选)或者多选框
+                </div>
+                <li>Demo</li>
+                <div class="row">
+                    <pre class="col-md-6 col-sm-6"><code class="html">
+                            <select multiple=true>
+                                    <option value=1>A1</option>
+                                    <option value=2>A2</option>
+                                    <option value=3>A3</option>
+                                </select>
+                            <select>
+                                    <option value=1>A1</option>
+                                    <option value=2>A2</option>
+                                    <option value=3>A3</option>
+                                </select>
+                            </code></pre>
+                    <div class="alert alert-dark col-md-6 col-sm-6" role="alert">
+                        <p>使用<kbd> multiple </kbd>可以设置为多选</p>
+                        <select multiple=true>
+                            <option value=1>A1</option>
+                            <option value=2>A2</option>
+                            <option value=3>A3</option>
+                        </select>
+                        <br><br><br>
+                        <select>
+                            <option value=1>A1</option>
+                            <option value=2>A2</option>
+                            <option value=3>A3</option>
+                        </select>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br><br>
+        <h5 id="image"> <kbd>image</kbd> </h5>
+        <div class="card">
+            <div class="card-body">
+                <div class="alert alert-dark" role="alert">
+                    显示图片, 可以是自己服务器上的资源(File path), 也可以是外部资源(URL)
+                </div>
+                <li>Demo</li>
+                <div class="row">
+                    <pre class="col-md-6 col-sm-6"><code class="html">
+                            <img class="img-fluid" src="img/word_title.png" alt="大圣header" />
+                            <img class="img-fluid" src="https://getbootstrap.com/docs/4.1/assets/img/bootstrap-stack.png" alt="Bootstrap Icon">
+                            <img class="img-fluid" src="img/abc" alt="abc不存在" />
+                            </code></pre>
+                    <div class="alert alert-dark col-md-6 col-sm-6" role="alert">
+
+                        <img class="img-fluid" src="img/word_title.png" alt="大圣header" />
+                        <img class="img-fluid" src="https://getbootstrap.com/docs/4.1/assets/img/bootstrap-stack.png" alt="Bootstrap Icon">
+                        <p>使用<kbd> alt </kbd>属性可以在图片不存在的时候显示相应文字 </p>
+                        <img class="img-fluid" src="img/abc" alt="abc不存在" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br><br>
+        <h4 >2. Basic CSS</h4>
+
+        <h5 id="CSS的引用"> <kbd>CSS的引用</kbd> </h5>
+        <div class="card">
+            <div class="card-body">
+                <div class="alert alert-dark" role="alert">
+                    CSS的引入有3中主要方式:
+                    <ul>
+                        <li>inline</li>
+                        <li>style tag</li>
+                        <li>css file</li>
+                    </ul>
+                </div>
+                <li>Demo</li>
+                <div class="row">
+                    <pre class="col-md-6 col-sm-6"><code class="html">
+                            inline:    
+                        <p style="background-color: red">red background</p>
+                            
+                        style tag:
+                            <style>
+                                #yellow-demo{
+                                    background-color: yellow
+                                }
+                            </style>
+                            <p id='yellow-demo'>yellow background</p>
+
+                        css file:
+                        <!-- <link> tag should always be put inside <head> tags -->
+                            <link rel="stylesheet" href="css/mycss.css">
+                        
+                        <p id='css-ref-demo'>greenyellow background</p>
+                            </code></pre>
+                    <div class="alert alert-dark col-md-6 col-sm-6" role="alert">
+                        inline:
+                        <p style="background-color: red">red background</p>
+
+                        style tag:
+                        <style>
+                            #yellow-demo {
+                                background-color: yellow
+                            }
+                        </style>
+                        <p id='yellow-demo'>yellow background</p>
+
+                        css file:<br>
+
+                        <head>
+                            <link rel="stylesheet" href="css/mycss.css">
+                        </head>
+                        <p id='css-ref-demo'>greenyellow background</p>
+                        NOTE: <kbd>link</kbd> tag should always be put inside <kbd>head</kbd> tags at the very beginning.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br><br>
+        <h5 id="font"> <kbd>font</kbd> </h5>
+        <div class="card">
+            <div class="card-body">
+                <div class="alert alert-dark" role="alert">
+                    字体设置,包括字体类型和字体大小
+                </div>
+                <li>Demo</li>
+                <div class="row">
+                    <pre class="col-md-6 col-sm-6"><code class="html">
+                            <p style='font-family: "Times New Roman", Times, serif;'>
+                                    大家好,这是Times New Roman
+                                </p>
+                                <p style="font-family:'Courier New', Courier, monospace;font-size: 24px;">
+                                    大家好,这是Courier New(24px)
+                                </p>
+                            </code></pre>
+                    <div class="alert alert-dark col-md-6 col-sm-6" role="alert">
+                        <p>使用<kbd> font-size </kbd>属性可以 改变字体大小 </p>
+                        <p style='font-family: "Times New Roman", Times, serif;'>
+                            大家好,这是Times New Roman
+                        </p>
+                        <p style="font-family:'Courier New', Courier, monospace;font-size: 24px;">
+                            大家好,这是Courier New(24px)
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br><br>
+        <h5 id="box-model"> <kbd>box-model</kbd> </h5>
+        <div class="card">
+            <div class="card-body">
+                <div class="alert alert-dark" role="alert">
+                    盒模型, 组件的内外部间隔.
+                </div>
+                <li>Demo</li>
+                <div class="row">
+                    <pre class="col-md-6 col-sm-6"><code class="html">
+                            *******
+                            </code></pre>
+                    <div class="alert alert-dark col-md-6 col-sm-6" role="alert">
+                        <p>使用<kbd> ****** </kbd>和<kbd> ****** </kbd>属性可以 ******* </p>
+                        *******
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br><br>
+        <h5 id="使用Bootstrap美化"> 使用<kbd>Bootstrap</kbd> 美化</h5>
+        <div class="card">
+            <div class="card-body">
+                <div class="alert alert-dark" role="alert">
+                    盒模型, 组件的内外部间隔.
+                </div>
+                <li>Demo</li>
+                <div class="row">
+                    <pre class="col-md-6 col-sm-6"><code class="html">
+                            *******
+                            </code></pre>
+                    <div class="alert alert-dark col-md-6 col-sm-6" role="alert">
+                        <p>使用<kbd> ****** </kbd>和<kbd> ****** </kbd>属性可以 ******* </p>
+                        *******
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+
+        <img src="img/word_tail.png" class="img-fluid" alt="Responsive image">
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+    <script src="highlight/highlight.pack.js"></script>
+    <script src="myjs/encode_code.js"></script>
+
+    <script>hljs.initHighlightingOnLoad();</script>
+</body>
+
+
+
+</html>

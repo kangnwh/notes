@@ -1,0 +1,94 @@
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+    <link rel="stylesheet" href="highlight/styles/default.css">
+
+    <title>FIT 5032 Tutorial 02 - .net MVC</title>
+</head>
+
+<body>
+    <div class="container">
+        <img src="img/word_title.png" class="img-fluid" alt="Responsive image">
+        <h1>FIT 5032 Tutorial 02</h1>
+        <div class="alert alert-primary" role="alert">
+            <h5 id="content">Content:</h5>
+            <ol>
+                <li>dotnet framework - Route and MVC</li>
+                <li><a href="html_tutorial.html">HTML 和 CSS (cont.)</a></li>
+                <li><a href="javascript_tutorial.html">JavaScript Basic</a></li>
+            </ol>
+        </div>
+
+
+
+
+        <h4>MVC</h4>
+        <h5 id="Route"> <kbd>Route</kbd> </h5>
+        <div class="card">
+
+            <div class="card-body">
+
+                <div class="alert alert-dark" role="alert">
+                    dotnet中的route事基于<br>
+                    <kbd>Controller/Action/Id</kbd>的, 也就是<br>
+                    <kbd>ClassName(除去Controller部分)</kbd>/<kbd>MethodName</kbd>/<kbd>参数</kbd><br> 例如 <kbd>"https://localhost/Movie/Hot"</kbd>
+                    对应的就是<br>
+                    <pre><code class="c#">
+                        public class MovieController:Controller{
+                            public string Hot(){
+                                return "复仇者联盟3"";
+                            }
+                        }
+                    </code></pre>
+                </div>
+            </div>
+            <p>Demo1: 新建一个utorial的controller,简单返回字符串</p>
+
+            <pre><code class="c#">
+                        // new file named "TutorialController" under Controller folder
+                        public class HTMLTutorialController:Controller{
+                            public string Html(int id=0){
+                                return $"you requested Html with id={id}";
+                            }
+                            public string JavsScript(int id=0){
+                                return $"you requested JavsScript with id={id}";
+                            }
+                            public string DotNetFramework(int id=0){
+                                return $"you requested DotNetFramework id={id}";
+                            }
+                        }
+
+                            </code></pre>
+
+            <p>Demo2: 为对应的action建立cshtml文件</p>
+
+            <pre><code class="html">
+                <!-- new cshtml files with action(method) names of TutorialController class under corresponding View folder -->
+                <!--  Eg: Html.cshtml -->
+                This is HTML Totorial!
+                @ViewData['id']
+
+                </code></pre>
+                <p>Demo3: 于原有layout进行集成</p>
+        </div>
+
+        <img src="img/word_tail.png" class="img-fluid" alt="Responsive image">
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+    <script src="highlight/highlight.pack.js"></script>
+    <script src="myjs/encode_code.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+</body>
+
+
+
+</html>
