@@ -55,3 +55,19 @@ dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Design
 
 
 ####Use `Congituration` in your class
+
+In your class, use `DI` to inject `IConfiguration`
+
+```c#
+private IConfiguration _configuration;
+ 
+public HomeController(IConfiguration Configuration)
+{
+      _configuration = Configuration;
+}
+public void useConfig()
+{
+    _configuration["MySection:MyFirstConfig"];
+}
+```
+

@@ -217,7 +217,7 @@ public async Task<IActionResult> OnPostAsync(string returnUrl = null)
 3. Database migration
 
 ```shell
-dotnet ef migrations add AddCreateDateForUser
+dotnet ef migrations add AddCreateDateForUser 
 dotnet ef database update
 ```
 

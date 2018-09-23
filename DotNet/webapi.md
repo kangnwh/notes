@@ -84,31 +84,40 @@ services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 ```c#
 
-[Route("api/[controller]")]
-    public class LoginController : Controller
-    {
-        private IConfiguration _configuration;
+public IActionResult Login([FromBody] LoginForm loginUser ){
+            if(!ModelState.IsValid){
+                return BadRequest(ModelState);
+            }
+            // string hashedPw = Crypto.HashPassword(loginUser.Password);
+            // string username = loginUser.Username;
+            // Debug.WriteLine(message: $"user:{username}");
+            // Debug.WriteLine(message: $"password:{hashedPw}");
 
-        public LoginController(IConfiguration Configuration)
-        {
-            _configuration = Configuration;
-        }
+            User user = db.User.Where( u => u.Username == loginUser.Username ).FirstOrDefault();
 
-        [HttpPost("login")]
-        public IActionResult Login(){
-            var userInfoClaims = new[] {
-                new Claim(ClaimTypes.Name, "222"),
-                new Claim(ClaimTypes.Role,"admin"),
-                new Claim(ClaimTypes.Role,"user")
-                };
+            if(user == null){
+                return BadRequest("Invalid username");
+            }
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Security:Tokens:Key"]));
+            if (!Crypto.VerifyHashedPassword(user.Password,loginUser.Password)){
+                return BadRequest("Invalid password");
+            }
+
+
+            // If user is verified, add claims into token
+            List<Claim> userInfoClaims = new List<Claim>();
+
+            userInfoClaims.Add(new Claim(ClaimTypes.Name,user.Username));
+            userInfoClaims.Add(new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()));
+            
+                
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Security:Tokens:Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
                 claims:userInfoClaims,
-                issuer:_configuration["Security:Tokens:Issuer"],
-                audience:_configuration["Security:Tokens:Audience"],
+                issuer:configuration["Security:Tokens:Issuer"],
+                audience:configuration["Security:Tokens:Audience"],
                 expires: DateTime.Now.AddMinutes(5),
                 signingCredentials:creds
                 );
@@ -116,19 +125,53 @@ services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
             return Ok(tokenString);
         }
-
-    }
 ```
 
 
 
-6. Configure your access control
+6. Get `claims` from `token`
 
-   |- `[Authorize]` 
+```c#
+namespace MobileBackend.Util
+{
+    public static class MyExtensions
+    {
+        public static int CurrentUserId(this ClaimsPrincipal user )
+        {
+            var userIdClaim = user.FindFirst(ClaimTypes.NameIdentifier);
+            if(userIdClaim == null) //null
+            {
+                return -1;
+            }
+            
+            var userId = int.Parse(userIdClaim.Value);
+            return userId;
+        }
 
-   |- 
+        public static string CurrentUserName(this ClaimsPrincipal user )
+        {
+            var userIdClaim = user.FindFirst(ClaimTypes.Name);
+            if(userIdClaim == null) //null
+            {
+                return null;
+            }
+            
+            return userIdClaim.Value;
+        }
 
-   |- `[AllowAnonymous]`
+    }
+}
+```
 
-   |- 
+
+
+7. Configure your access control
+
+|- `[Authorize]` 
+
+|- 
+
+|- `[AllowAnonymous]`
+
+|- 
 
