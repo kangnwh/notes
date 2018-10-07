@@ -17,7 +17,7 @@ dotnet add package MySql.Data.EntityFrameworkCore
 dotnet add package MySql.Data
 ```
 
-####DB Context connection string configuration
+#### DB Context connection string configuration
 
 1. Add your connection string in file `appsettings.json`
 
@@ -26,8 +26,7 @@ ConnectionStrings:{
      "${ConnectionName}": "server=${server_ip};port=3306;database=${db_name};uid=${user};password=${password}"
 }
 ```
-
-####  
+ 
 
 ## [Database First]
 
@@ -45,7 +44,7 @@ public class MobileDbContext : DbContext
     }
 ```
 
-#####Generate entity classes from exisiting database
+##### Generate entity classes from exisiting database
 
 ```
 dotnet ef dbcontext -h
@@ -61,7 +60,7 @@ dotnet ef dbcontext scaffold -o Model "server=123.56.22.40;port=3306;database=sn
 
 This is because the `id` column(key) in table `post` is not set as `unique`.
 
-#####Add Db context in your service configuration method in file `Startup.cs`
+##### Add Db context in your service configuration method in file `Startup.cs`
 
 ```c#
 // If you use mysql
