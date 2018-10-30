@@ -4,7 +4,13 @@
 
 1. open `Info.plist`  and add new rules (photo library as an example)
 
-![image-20180803215113155](/var/folders/kp/72xr2wjs14750f_r6h0qjypc0000gn/T/abnerworks.Typora/image-20180803215113155.png)
+   ```
+   Privacy - Photo Library Usage Description
+   Privacy - Photo Library Additions Usage Description
+   ```
+
+
+![image-20181002123721016](assets/image-20181002123721016.png)
 
 2. 
 
@@ -20,13 +26,21 @@ extension MyClass: UIImagePickerControllerDelegate{
          // 
     }
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
-            self.imagePickedBlock?(image)
-        }else{
-            print("Something went wrong")
+    private func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        var newImage: UIImage
+        
+        if let possibleImage = info["UIImagePickerControllerEditedImage"] as? UIImage {
+            newImage = possibleImage
+        } else if let possibleImage = info["UIImagePickerControllerOriginalImage"] as? UIImage {
+            newImage = possibleImage
+        } else {
+            return
         }
-        self.dismiss(animated: true, completion: nil)
+        
+        // do something interesting here!
+        print(newImage.size)
+        
+        dismiss(animated: true)
     }
 }
 ```
@@ -70,8 +84,8 @@ func photoLibrary()
 ## A function to show options to user
 
 ```swift
-func showActionSheet(vc: UIViewController) {
-        currentVC = vc
+func showActionSheet() {
+        let currentVC = vc
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
         actionSheet.addAction(UIAlertAction(title: "Camera", style: .default, handler: { (alert:UIAlertAction!) -> Void in
@@ -84,7 +98,7 @@ func showActionSheet(vc: UIViewController) {
         
         actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         
-        vc.present(actionSheet, animated: true, completion: nil)
+        self.present(actionSheet, animated: true, completion: nil)
     }
 ```
 
