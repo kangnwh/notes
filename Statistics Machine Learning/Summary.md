@@ -101,13 +101,6 @@ Choose values in the tables that maximise the likelihood of the data.
 
 
 
-##### marginal likelihood
-
-- Acceptable: the joint likelihood of the data and prior, after marginalising out the model parameters.
-- Acceptable: $p(x) = 􏱿 \int p(x|θ)p(θ)dθ$ where x is the data, θ the model parameter(s), and p(x|θ) the
-  likelihood and p(θ) the prior.
-- Acceptable: the expected likelihood of the data, under the prior.
-
 
 
 ##### Dimensionality reduction
@@ -119,6 +112,15 @@ representing the data using a smaller number of variables (dimensions) while pre
 - Visualisation (e.g., mapping multidimensional data to 2D) 
 - Computational efficiency in a pipeline
 - Data compression or statistical efficiency in a pipeline 
+
+
+
+##### marginal likelihood
+
+- Acceptable: the joint likelihood of the data and prior, after marginalising out the model parameters.
+- Acceptable: $p(x) = 􏱿 \int p(x|θ)p(θ)dθ$ where x is the data, θ the model parameter(s), and p(x|θ) the
+  likelihood and p(θ) the prior.
+- Acceptable: the expected likelihood of the data, under the prior.
 
 
 

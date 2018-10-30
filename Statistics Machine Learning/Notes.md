@@ -740,10 +740,16 @@ reduce count of dimensions via data transformation
 
 
 
-## BayesianRegression
+## Bayesian Regression
 
 1. 假设先验概率 prior
-2. 训练过程中得到后验概率 posterior
+2. 训练数据时Likelihood
+3. 训练过程中得到后验概率 posterior
+4. 使用训练后得到的posterior更新原来的prior
+
+
+
+![image-20181030213822156](assets/image-20181030213822156.png)
 
 
 
