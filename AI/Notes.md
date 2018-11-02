@@ -478,17 +478,109 @@ Definition:
 
 
 
+- Stop when $R = max_s |V_{i+1}(s) − V_i(s)| <= \epsilon$, where $\epsilon$  is a predefined threhold
+- Example (**Assuming no action costs and γ = 0.9**) :
+
+> 1. initial all $V_0 = 0$
+> 2. calculate $V_1$, by select $max$ reward of next state $s'$, eg, the one on the left of  `+1`, $max_reward = \gamma * p(right) * 1 = 0.9 * 0.8 * 1 = 0.72$
+> 3. loop until $max_s |V_{i+1}(s) − V_i(s)| <= \epsilon$
+>
+> ![image-20181102105917594](assets/image-20181102105917594.png)
+
+
+
+#### How to select policy from value iteration (policy extraction)
+
+simpley select : $$action = argmax_{a\in A(s) }Q(s,a)$$
+
+
+
+### Policy Iteration
+
+Create a improved policy in each iteration.
+
+
+
+#### Policy evaluation
+
+Formula: 
+
+|      |                                                              |                                                              |
+| ---- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+|      | ![image-20181102111405872](assets/image-20181102111405872.png) | - $V^\pi(s)$: The expected cost of policy $\pi$ from state $s$ to $goal$<br />-  $s'$: Next state generate by action $a$ |
+|      | ![image-20181102111622051](assets/image-20181102111622051.png) |                                                              |
+
+
+
+#### Policy iteration steps
+
+- Starting with arbitrary policy $\pi$
+- Compute $V^π(s)$ for all $s$ (`policy evaluation`) 
+- Improve $\pi$ by setting $π(s) := argmax_{a∈A(s)} Q^π (a, s)$ (improvement) 
+-   If $π$ changed in 3, go back to 2, else finish 
 
 
 
 
 
+### Partially Observable MDPs
+
+relax the assumption of full-observability. A POMDP is defined as:
+
+![image-20181102114121448](assets/image-20181102114121448.png)
+
+#### Solve MDPs
+
+- each state is a probability distribution over the set $S$
+- each state of the POMDP is a ***belief*** state, which defined the probability of being in each state $S$.
+- solutions are policies that **map belief states into actions**
+- Optimal policies **minimise** the expected cost
 
 
 
+## Monte Carlo Tree Search
+
+- offline planning method: make decision at runtime, need calculation for every single step
+
+
+### Steps:
+
+| #    | Step          | Description                                                  |
+| ---- | ------------- | ------------------------------------------------------------ |
+| 1    | Select        | Given a tree policy, select a single node in the tree to assess. |
+| 2    | Expand        | Expand this node by applying one available action from the node. |
+| 3    | Simulation    | From the expanded node, perform a complete random simulation to a leaf node. This therefore assumes that the search tree is finite (but version for
+infinitely large trees exist). |
+| 4    | Backpropagate | the value of the node is backpropagated to the root node, updating the value of each ancestor node on the way. |
 
 
 
+### pseudo  code
+
+![image-20181102134343101](assets/image-20181102134343101.png)
+
+|                       |                                                              |                                                              |
+| --------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Nodes                 | store pair s, a, pointer to parent and Q(a, s)               |                                                              |
+| Node Expansion        | Apply action $a$ to state $s$ to get $s'$, with probability $Pa(s,s′)$ |                                                              |
+| $TreePolicy(root)$    | ![image-20181102134601279](assets/image-20181102134601279.png) | $Pa(s,s′)$ is stochastic, so several visits (in theory an infinite number) may be necessary to generate all successors. |
+| $DefaultPolicy(best)$ | ![image-20181102135012850](assets/image-20181102135012850.png) |                                                              |
+| $Backup(best,\Delta)$ | ![image-20181102135545501](assets/image-20181102135545501.png) |                                                              |
+
+
+
+### Multi-arm bandit - 如何选择expand node - exploration  and exploitation
+
+#### Definition
+
+An N-armed bandit is defined by a set of random variables $X_{i,k}$ where $1 ≤ i ≤ N$, such that $i$ is the arm of the bandit; and $k$ the index of the play of arm $i$. (we **do not know** the probability distributions of the random variables.)
+
+
+
+**In this definition, we can transform it to a MCTs problem:**
+
+- actions $a$ applicable on s are the “arms of the bandit“
+- $Q(a, s)$ corresponds to the random variables $X_{i,n}$
 
 
 

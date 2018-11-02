@@ -2,5 +2,5 @@
 
 
 
-- [AI](./AI)
+- [AI](./AI/Notes.md)
 
