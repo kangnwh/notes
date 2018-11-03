@@ -208,8 +208,6 @@ C[admissible] -->F(safe)
 | Programming Based | domain-knowledge easy to express                             | cannot deal with situations not anticipated by programmer    |      |
 | Learning Based    | - Unsupervised or Supervised<br />- Evolutionary<br />- does not require much knowledge in principle | in practice, hard to know which features to learn, and is slow |      |
 | Model Based       | - General Problem Solving(GPS)<br />- Powerful: Generality<br />- Quick: Rapid phototyping<br />- Flexible & Clear |                                                              |      |
-|                   |                                                              |                                                              |      |
-|                   |                                                              |                                                              |      |
 
 
 
@@ -584,6 +582,223 @@ An N-armed bandit is defined by a set of random variables $X_{i,k}$ where $1 ≤
 
 
 
+### Flat Monte Carlo (FMC)
+
+- select each arm with the same probability
+- $Q\_value$ for an action $a$ in a given state $s c$an be approximated:
+
+> ![image-20181102142800121](assets/image-20181102142800121.png)
+>
+> - N(s,a) is the number of times a executed in $s$.
+> - $N(s)$ is the number of times $s$ is visited.
+> - $r_t$ is the reward of $t^{th}$ simulation from $s$
+> - $I_t(s,a)$ is 1 if a was selected on the $t^{th}$ simulation from $s$, and is 0 otherwise
+
+
+
+#### Issue of FMC
+
+- 所有action都有相同概率被选中, 浪费时间, 效率低
+- 更好的做法是focus on **the most promising parts** of the tree given the rewards we have received so far.
+
+### Exploration vs. Exploitation
+
+#### The Fear of Missing Out (FOMO)
+
+##### regret
+
+If I play arm b, my regret is the best possible expected reward minus the expected reward of playing b. If I play arm a (the best arm), my regret is 0. Regret is thus the expected loss due to not doing the best action
+
+> 当选择的不是最优的选项时, 所丢失的分数
+
+
+
+##### Minimum regret
+
+|                     |                                                              |                                                              |
+| ------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| ***ε*-greedy **     | 随即一个[0,1]的数$r$, 如果$r<\epsilon$, 那么随机选择arm; 否则选择目前已知最好的 | Typically, values of $ε$ around `0.05-0.1` work well.        |
+| ***ε*-decreasing ** | same as $ε$-greedy, 但是 $\epsilon$ 每次都会减小(更偏向于使用已有知识); A parameter $\alpha$ between [0,1] specifies the decay, $\epsilon := \epsilon * \alpha$ |                                                              |
+| **Softmax**         | ![image-20181102145341142](assets/image-20181102145341142.png) | ***τ*** is the temperature, a positive number that dictates how much of an influence the past data has on the decision. |
+| **UCB1**            | refer to below for details                                   |                                                              |
+|                     |                                                              |                                                              |
+
+
+
+####  Upper Confidence Bounds (UCB1)
+
+how to select policy accoding to current state $s$ and prelearned knowledge ($Q_{value}$ and play count) :
+
+|                                                              | exploitation                                                 |       | exploration                                                  |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ----- | ------------------------------------------------------------ |
+| ![image-20181102150408853](assets/image-20181102150408853.png) | ![image-20181102150201049](assets/image-20181102150201049.png) | **+** | ![image-20181102150207523](assets/image-20181102150207523.png) |
+|                                                              | weight from learned knwoledge                                |       | weigth from select count (the less the big)                  |
+
+- $Q(a, s)$ is the estimated *Q*-value.
+- $N(s)$ is the number of times *s* has been visited.
+- $N(s,a)$ is the number of times *a* has been executed in *s*.
+
+
+
+### Upper Confidence Tree (UCT)  ===> $UCT = MCTS + UCB1$
+
+![image-20181102151047562](assets/image-20181102151047562.png)
+
+- $C_p > 0$: exploration constant **(bigger $C_P$  encourages more exploration)**
+
+
+
+### Value/Policy interation VS. MCTs
+
+|          | Value/Policy iteration                  | MCTS                                                         |
+| -------- | --------------------------------------- | ------------------------------------------------------------ |
+| Cost     | High                                    | Low                                                          |
+| Converge | Higher(works from any Robustness state) | Low (works only from initial state or state reachable from initial state) |
+|          | 一次计算,终身受用 (offline)             | 每步(之前没碰到过的)都需要重新计算(online)                   |
+
+
+
+
+
+## Reinforcement Learning
+
+
+
+### Learnning
+
+- Maintain a Q-function that records Q(s, a) for every state-action pair.
+- Repeat for each step until *converge/timeup/good engouth:*
+  - choose an action using a multi-armed bandit algorithm
+  - apply that action and receive the reward
+  - update Q(s, a) based on that reward
+
+
+
+#### Q-Function
+
+Used to update ***Q_value***
+
+
+
+#### Q-Table
+
+Used to maintain Q-Values from Q-Function
+
+> ![image-20181102161427648](assets/image-20181102161427648.png)
+
+
+
+#### How to use Q-Table/Q-Function
+
+**Policy Extractation**: (same as the one we used in *value iteration*)
+
+![image-20181102161614271](assets/image-20181102161614271.png)
+
+
+
+
+
+### Q-Learning and SARSA
+
+| Q-Learning                                                   | SARSA                                                        |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| ![image-20181102161038787](assets/image-20181102161038787.png) | ![image-20181102162040162](assets/image-20181102162040162.png) |
+| Off policy (ignore the action selected by policy)            | On policy (learn action values from policy)                  |
+| ![image-20181102180429926](assets/image-20181102180429926.png) | ![image-20181102180439760](assets/image-20181102180439760.png) |
+| (1) selects an action $a$; <br />(2) takes that actions and observes the reward & next state $s′$;<br />(3) updates optimistically by assuming the future reward is
+$max_{a′} Q(s′,a′)$ – that is, it **assumes** that **future behaviour will be optimal** according to its policy. | (1) selects action $a′$ for the **next loop iteration**;<br /> (2) in the next iteration, takes that action and observes the reward & next state $s′$; <br />(3) only then chooses $a′$ for the next iteration; <br />(4) updates using the estimate for the actual next action chosen – which may not be the best one (e.g. it could be selected so that it can explore). |
+| converge to the optimal policy irrelevant of the policy followed (unsafe, risky, 风险与机遇并存, 最优同时意味着里危险最近, 例如Q-learning会选择悬崖边这条Optimal路) | converge to the optimal policy that according to the original policy(选择相对Optimal的路, 可能会**牺牲**一些分数来保证**不会触发最坏的情况**) |
+| better when 有充足时间来进行训练 (better for offline learning) | better when learns while operating in its environment(应用在真实环境学习的情况, better for online learning) |
+
+
+
+### SARSA 
+
+**On-Policy**: Instead of estimating Q(s′,a′) for the best estimated future state during update, on-policy uses the actual next action to update
+
+
+
+### Q-Learning & SARSA  (TD methods) Weaknesses
+
+- take long time to propagate (pass known knowledge to eary states)
+- Q-Table is too big sometimes ($|A| * |S|$)
+- Hard to converge
+- Rewards can be spare, which means that a better state cannot be sensed in a short time.
+
+
+
+#### Improvement methods:
+
+- **n-Step temporal difference learning**: look nsteps ahead for the reward before updating the reward
+- **approximate methods**: using approximate method to eliminate the need for large Q-table, and also allow providing reasonable estimates of $Q(s,a)$ even if $(s,a)$ never been applied before
+- **Reward shaping and value-Function initialisation**: MOdify/augment our reward function to make the better states to be sensed easier.
+
+
+
+## n-Step learning: TD ($\lambda$)
+
+- $\lambda$: the number of steps that we want to look ahead
+  - $T(0)$ -> standard reinforcement learning
+  - $T(1)$ -> looks one step ahead 
+  - $T(2)$ -> looks 2 steps ahead 
+
+- Back propagation for $n$ steps 
+
+
+
+### Approximate Reinforcement Learning
+
+- used to reduce the ***large state space*** problem, by 
+
+```
+1. only consider most improtant features (or a linear combination of features)
+2. using the features selected from step 1 in Q-function
+3. using value from step 2 to update Q-table (instead of Q-function with state)
+```
+
+
+
+### Q-value for approximation
+
+| Definition                                                   | Example                                                      |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| ![image-20181103112325222](assets/image-20181103112325222.png) | ![image-20181103112334287](assets/image-20181103112334287.png) |
+
+
+
+#### Q-function Update (update *weight* instead of actions)
+
+- For Q-learning
+
+> ![image-20181103112758691](assets/image-20181103112758691.png)
+
+- For SARSA
+
+> ![image-20181103112813102](assets/image-20181103112813102.png)
+
+
+
+#### Q-value propagation
+
+once we get a reward, we get a matrix of ***W***, so that we can use this for all states
+
+
+
+
+
+#### Approximation with Neural Networks
+
+
+
+### Shaping reward
+
+- used for spare rewards by applying domain knowledge (point out what a good state looks like)
+
+> ![image-20181103121148109](assets/image-20181103121148109.png)
+
+
+
+#### Potential-based reward shaping
 
 
 
@@ -591,12 +806,35 @@ An N-armed bandit is defined by a set of random variables $X_{i,k}$ where $1 ≤
 
 
 
+## Game Theory
+
+### normal form game (a game in strategic form)
+
+non-zero-sum game
+
+**dominant strategy: 总是对自己最好的choice (for all actions the other one may choose)**
+
+
+
+#### Nash Equilibrium
 
 
 
 
 
+#### Mixed Strategies
 
+##### Indifferency:
+
+$E(p_i, s) = E(p_i, s')$
+
+
+
+#### Extended form games
+
+Information of a state cannot be fully seen/sensed by players
+
+- do research before choosing (so that there we do choose based on knowledge from research, like buy things based whether a product is good)
 
 
 
