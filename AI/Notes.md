@@ -137,8 +137,8 @@ Let $Π$ be a planning task with state space $ΘΠ = (S, L, c, T, I, SG)$, and l
 
 - **safe**: if $h∗(s) = ∞$ for all $s ∈ S$ with $h(s) = ∞$;
 - **goal-aware**: if $h(s) = 0$ for all **goal states** $s ∈ SG$;
-- **admissible**: if $h(s) ≤ h∗(s)$ for all $s ∈ s $;
-- **consistent**: if $h(s) ≤ h(s ) + c(a) $for all transitions $s ^{(a)}→ s'$ .
+- **admissible**: if $h(s) ≤ h^∗(s)$ for all $s ∈ s $;
+- **consistent**: if $h(s) ≤ h(s' ) + c(a) $for all transitions $s ^{(a)}→ s'$ .
 
 ##### 特性推理
 
