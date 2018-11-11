@@ -1,4 +1,4 @@
-#  Mobile
+#   Mobile
 
 [TOC]
 
@@ -311,7 +311,7 @@ C --> D(Meanings)
 
 
 
-### Game design
+### Game design criticals
 
 |              |                                                              |      |
 | ------------ | ------------------------------------------------------------ | ---- |
@@ -321,11 +321,14 @@ C --> D(Meanings)
 
 
 
-#### The polt
+#### [+?] The polt
 
-- 
+- Experience should not be linear
+- 情节循序渐进, 高潮迭起, 刺激不断
 
 #### The flow
+
+- 难易结合, 有难的篇章/操作,也有白痴/简单的篇章/操作
 
 > flow of the game should be traded off between challenges and skills (of players)
 >
@@ -344,15 +347,27 @@ C --> D(Meanings)
 
 
 
+### Rules & Goals
+
+略
+
+
+
+### Aesthetics
+
+| Factors         | Description                                                  |
+| --------------- | ------------------------------------------------------------ |
+| Style Guide     |                                                              |
+| Curves & Ratios | - Fibonacci Curves<br/>- Golden Ratio<br />- Golden Angle<br />- Voronoi Cells<br />- Fractals, L-Systems<br />- Flow Simulations |
+| **Colors**      | - Moodboards (mood board是指经由对使用对象与产品认知的色彩，影像，数字资产或其它材料的收集，可以引起某些情绪反应，作为设计方向与形式的参考。设计师运用它来检视色彩，样式，并据以说服其它人之所以如此设计的理由。其应用范围很广，可以用于接口设计，网页设计，品牌设计，营销沟通，电影制作，脚本设计，电玩游戏制作，甚至是绘图，室内设计等等。) |
 
 
 
 
 
+### Realism
 
-
-
-##### Uncanny Valley
+##### Problem: Uncanny Valley
 
 人类(玩家)对机器人(游戏人物)在"拟人"水平达到100%之前的一小段时间突然产生强烈的厌烦.
 
@@ -362,44 +377,69 @@ C --> D(Meanings)
 
 
 
-##### Game Loop
+### Game Technologies
+
+
+
+
+
+#### Game Loop
 
 ![image-20181108114137023](assets/image-20181108114137023.png)
 
 
 
-##### Elements
+#### Game API
 
-- Sprite
+| Element                | Description                                                  |
+| ---------------------- | ------------------------------------------------------------ |
+| GameCanvas             | ▪ Dedicated screen buffer (Graphics object)<br/>▪ Supports incremental updates (instead of rendering entire frame)<br />▪ Flush graphics: display contents of the buffer |
+| Layers                 | ▪ Sprites and tiled layers<br/>▪ Can be visible or invisible |
+| Screen Buffer & Layers |                                                              |
+| Sprites                | A set of tiles is small; little memory required              |
 
 
 
-##### Collision Detection
+#### Collision Detection
 
 - Boundary-level (fast, like using a rectangle to represent a  sprite)
 - Pixel-levle (precise but resource-consumption)
 
 
 
-##### Features of mobile games
+#### Features of mobile games
 
 | Features             | Description                                                  |
 | -------------------- | ------------------------------------------------------------ |
 | Processing & Network | Less CPU power, (usually) no hardward acceleration, less memory, unstable networks |
-| Hardware             | Input capabilities, screen size                              |
+| Hardware             | Input capabilities, screen size<br />- touch screen: feedback, adjustable |
 | Portabality          | **Sensors**: location, acceleration, camers<br />**Context-awareness**: use environment as part of the game (AR)<br />**Device as controller**<br />Mixed reality games, location-based games |
+
+
+
+#### Augmented Reality (AR)
+
+- Mixed Reality(MR)
+
+> ![image-20181110111426867](assets/image-20181110111426867.png)
 
 
 
 ## Sensors 
 
-|                         |                                                              |                                                              |
+| Types                   |                                                              |                                                              |
 | ----------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | Wearable Computing      |                                                              |                                                              |
 | AR vs VR                |                                                              |                                                              |
-| Internet of Things      |                                                              |                                                              |
-| Sensors                 | In the broadest definition, a sensor is a **device, module, or subsystem** whose purpose is to **detect events or changes** in its environment and **send the information to other electronics**, frequently a computer processor. | ![image-20181108134836350](assets/image-20181108134836350.png)<br />Camera, GPS, Accelerometer, Fingerprint, Ambient light sensor, Magnetometer, Microphone, Barometer |
-| Context-Aware Computing | Such context-aware software adapts according to thelocation of use, the collection of nearby people, hosts, and accessible devices, as well as to changes to such things over time. | Eg: An accelerometer to detect whether you are in a train, bus or car and do some task relevantly |
+| Internet of Things      | - Reliable and effective for IoT (No)<br />- Data privacy is an important problem (access easily granted, ) | - Lightweight protocols<br />- Network discovery<br />- Scalability<br />- Naming and addressing strategies<br />- Dynamic routing |
+| **Sensors**             | In the broadest definition, a sensor is a **device, module, or subsystem** whose purpose is to **detect events or changes** in its environment and **send the information to other electronics**, frequently a computer processor. | ![image-20181108134836350](assets/image-20181108134836350.png)<br />Camera, GPS, Accelerometer, Fingerprint, Ambient light sensor, Magnetometer, Microphone, Barometer |
+| Context-Aware Computing | Such context-aware software adapts according to thelocation of use, the collection of nearby people, hosts, and accessible devices, as well as to changes to such things over time. | Eg: <br />- An accelerometer to detect whether you are in a train, bus or car and do some task relevantly<br />- light sensor (to adjust the light of the device itself)<br />- Accelerometer for layout change(landscape or ...) |
+
+
+
+
+
+
 
 
 
@@ -440,9 +480,9 @@ C --> D(Meanings)
 
 ### Location Privacy
 
-- Location-based spam
+- Location-based spam (email, ads)
   - Unsolicited advertising (Fackbook konws where you were !)
-- Personal safety
+- Personal safety (celebrities positions were made public)
   - Stalking
   - Assault
 
@@ -451,7 +491,69 @@ C --> D(Meanings)
   - Individual perferences
   - Health conditions
 
+
+
+#### Sharing - Location obfuscate
+
+##### Imperfect 
+
+- Types:
+
+> ![image-20181111105501604](assets/image-20181111105501604.png)
+
+
+
+
+
+
+
 #### [++] How to protect your location privacy
+
+| Method        | Description                                                  | Comment                                                      |
+| ------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Stealth       | Ability to be at a location without anyone knowing you are there (Use of passive devices such as GPS) | - Active devices such as mobile phones cannot preserve stealth  <br />- Access of information overrides stealth |
+| K-Anonymity   | https://www.zhihu.com/question/26710204<br />(k-anonymity指的是除非有k-1个人的数据同时被公布，才可能推断出第k个人是谁) | - quasi identifier                                           |
+| Cloaking      | - 降低精度<br />- Reduce the frequency of temporal information<br />![image-20181111103537813](assets/image-20181111103537813.png) | - split people in the system, until we have ***k*** persons in an area and use that location to represent you (这样的话, 只有同时识别k-1个人是谁, 才能分辨出来你是哪个) |
+| L-Diversity   | - persons with same non-sensitive fields combination have different sensitive fields (增加数据的丰度,使得具有相同分类的non-sensitive出现尽可能多种类的sensitive) |                                                              |
+| Decentralised | - limitations of centralised: communication overhead, security risks, single point of failure<br />- LCA: locally cloaked area<br />- GCA: globally cloaked area<br /> | See detail below                                             |
+| *k-GNN*       | - find the place that sum the distances to all users of a group<br />- **distance intersection attack**: if someone knows the distances from one user to 3+ places, then the accurate location of that user can be calculated out.(use aggregate information) | ![image-20181111142243789](assets/image-20181111142243789.png) |
+
+
+
+##### Decentralised
+
+**Principle:** 
+
+1. initiator: create request and encrypt request via public key (**using LCA to hide the precious location of itself**)
+2. agent: initiator sends request to agent, agent sends it to LBS provider (**using GCA to decrease precious location of itself)**
+3. LBS provider(eg, google): dencrypts the request and encrypts response via initiator's public key, and sends it to agent
+4. agent sends responses to all devices of an area
+5. only initiator can read the response (as only initiator has the private key to dencrypt the response)
+
+|                       |                        |                                                              |
+| --------------------- | ---------------------- | ------------------------------------------------------------ |
+| LCA                   | locally cloaked area   | - Parameter affecting ratio of length and width<br />- Parameter for the agent’s position relative to area’s boundary |
+| GCA                   | Globally Cloaked Area  | Find the minimum bounding box of a k-subset (including the agent’s own LCA) from n possible LCAs<br />![image-20181111134318289](assets/image-20181111134318289.png)<br />- Green area is the LCA of the user<br />- Dot black rectangle is the GCA |
+| Approximating the GCA |                        | - Red rectangle is the LCA<br />- Whole grey area is different GCA stages<br />1. find the edge that has the max distance to the LCA edges![image-20181111134545887](assets/image-20181111134545887.png)<br />2. remove the rectangles which have the edges that selected from step 1<br />3. Find the GCA that can cover all left LCAs (white area as below).<br />![image-20181111134901785](assets/image-20181111134901785.png) |
+| Random selection      | How to select an agent | - Initiator selects one device A<br />- Device A selects one device B<br />- B actually sends the request |
+
+
+
+##### Whole step
+
+
+
+![image-20181111140334056](assets/image-20181111140334056.png)
+
+ 
+
+#### Location attacks
+
+| Attack Type                           | Description                                                  |                                                              |
+| ------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Query Sampling Attack                 | Can easily find a user (eg, A) from several different regions' user set information | (User A can be easily outleted)![image-20181111142920224](assets/image-20181111142920224.png) |
+| Query Tracking Attack                 | - Assumptions: continuous queries, some unchanged identity key <br />- Track the path of a user, which may be used to find out the destination of that user (using intersection) | ![image-20181111143533874](assets/image-20181111143533874.png) |
+| Maximum Movement Boundary(MMB) Attack | - Assumptions: continuous queries, unchanged identity key between two consecutive queries<br />- Can be used to fidn the approximate location of that user | ![image-20181111143932800](assets/image-20181111143932800.png) |
 
 
 

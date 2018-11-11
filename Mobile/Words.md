@@ -16,3 +16,26 @@
 - Wireless sensor networks and mobile networks
 
 ![image-20181108213431424](assets/image-20181108213431424.png)
+
+
+
+| Word                 | Description    |
+| -------------------- | -------------- |
+| Ubiquitous Computing | 哪哪都有的计算 |
+|                      |                |
+|                      |                |
+|                      |                |
+|                      |                |
+|                      |                |
+|                      |                |
+|                      |                |
+|                      |                |
+
+
+
+
+
+
+
+
+
