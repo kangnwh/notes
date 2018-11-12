@@ -554,12 +554,242 @@ C --> D(Meanings)
 | Query Sampling Attack                 | Can easily find a user (eg, A) from several different regions' user set information | (User A can be easily outleted)![image-20181111142920224](assets/image-20181111142920224.png) |
 | Query Tracking Attack                 | - Assumptions: continuous queries, some unchanged identity key <br />- Track the path of a user, which may be used to find out the destination of that user (using intersection) | ![image-20181111143533874](assets/image-20181111143533874.png) |
 | Maximum Movement Boundary(MMB) Attack | - Assumptions: continuous queries, unchanged identity key between two consecutive queries<br />- Can be used to fidn the approximate location of that user | ![image-20181111143932800](assets/image-20181111143932800.png) |
+| Query Trajectory Attack               | - Assumptions: continuous queries, continuous updates to ensure result is correct<br />- Can be used to intersect rectangles of two<br/>consecutive updates to
+refine the user location | ![image-20181111212715128](assets/image-20181111212715128.png) |
+| Context Inference(outdoor/indoor)     | - to get the transportation of a user<br />- prediction user's future route(based on history)<br />- predict home address/current location<br />- predict user's properties(age, work role, coffee/tea drinker, smoker...) |                                                              |
+| Protect your trajectory               | Moving kNN Queries<br />- moving k nearest neighbours queries<br />- Risk: track user's trajectory | parameters: <br />- k: the bigger the less accurate<br />    |
+
+#### Metrics for Location Privacy
+
+| Nouns             | Definition                                                   | Comments                                                     |
+| ----------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Anonymity Sets    | The set of all possible subjects who might cause an action.  | - The larger the size of the set, the greater the anonymity (eg, k-anonymity) <br /> |
+| Obfuscation Sets  | The locations from which a user’s position is indistinguishable/indiscernable | - The larger the size of the set, the greater the location privacy |
+| Distance Measures | Location privacy is the distance between a user’s location   |                                                              |
+| Entropy(熵)       |                                                              |                                                              |
 
 
 
-## RFID
+#### Navigation under imprecision
 
-*
+| Strategy             | Solution Description                                         | Comments                                                     |
+| -------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Contingency Strategy | 1. 找到更可能的path<br />2. 尝试多条路线, 返回选择次数最多的routes | - in general, not the shortest path is selected<br />- use Dijkstra |
+
+
+
+### Negative Information
+
+Negative representation of data
+
+> Eg:
+>
+> ![image-20181112102911963](assets/image-20181112102911963.png)
+
+
+
+#### Applications
+
+- Discovering movement patterns in shopping malls
+- Monitoring traffic
+- Number of distinct entries to a shopping mall
+- Traffic between two suburbs
+
+
+
+
+
+## RFID (radio frequency identification)
+
+- Tag Types
+
+  > - Passive: No battery
+  > - Semi-passive: Circuit is battery-powered except communication
+  > - Active
+
+- Reader: query tags via radio signals
+
+
+
+### Working steps
+
+1. Reader (base station) sends a radio **interrogation signal** 
+2. RFID **tag** backscatters its ID 
+3. **Proximity-based** technology: determine the tag location by measuring the signal’s **time of flight** (in theory) 
+
+### Characteristics
+
+- No **line-of sight** necessary (in contrast to barcodes) 
+- **Resist environmental conditions**: frost, heat, dirt, ... 
+- RFID **tags** with **read & write memory** (nonvolatile EEPROM) 
+- Smartcard functionality (JavaCard): **cryptographic** computations for personal contact cards 
+- Data Rate: 9.6 –115 kbit/s
+- **Reader**: simultaneous detection of up to 256 tags, scanning of up to 40 tags per second
+- **Response time** of an RFID tag: less than 100 milliseconds
+- **ID**: 64, 96 , and up to 128 bits
+
+
+
+| Mode    | Operation                                                    | Feature                                                      |
+| ------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Passive | - Do not need an internal power source  <br />- Operating power is **supplied by the reader**  <br />- Electrical current induced in the tag’s antenna by the radio signal pulse of the reader | - Can be used for distances of **up to 3 meters**  <br />- Can be very small: 0.15 mm × 0.15 mm, 7.7μm thick (RFID powder, mu-chip from Hitachi)  <br />- Very **cheap** (a few cents) |
+| Active  | - Own power source (battery life expectancy: up to 10 years) | - Cost: a few dollars <br />- Size: as small as a small coin  <br />- Support read ranges up to 100 meters  <br />- Deployment in more **difficult** RF situations (water)  <br />- Tags have typically **a higher scanning reliability**  <br />- Combination with sensors (vibration, light, humidity, ...) |
+
+
+
+### RFID Frequency
+
+| Type                      | Range                            | Description                                                  |
+| ------------------------- | -------------------------------- | ------------------------------------------------------------ |
+| LF: low frequency         | 125 – 134.2 kHz, 140 – 148.5 kHz | - Good materials for water and metal (with hight go-through ability) <br />- Widely adopted (and used longer than HF)  <br />- No collision protocol available (see later) <br />- Typical read range: **30cm** |
+| HF: high frequency        | 13.56 MHz                        | - Provides anti-collision protocols<br/>- Up to **1m** read range |
+| UHF: ultra-high frequency | 868 – 928 MHz                    | - Difficult to penetrate of water and metal (similar to light)<br/>- Read range: up to **3m** |
+| Microwave or UWB          | 2.4 – 5.8 GHz or 3.1 – 10 GHz    | - Read range: up to **2m** (projected up to **200m for UWB**)<br/>- High data rate |
+
+
+
+#### Anti-Collision & Singulation
+
+Used to solve collision problem (a read receives signal from sevaral different tags at the same time)
+
+##### Anti-Collision: trade time for the possibility to interrogate all tags
+
+##### Singulation: identify(iterate through) all tags 
+
+
+
+### Protocols
+
+| Protocol             | Comment 1                                                    | Comment 2                                                    |
+| -------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| ALOHA                | - **“Tag-Talks-First”** behavior: **tag** automatically sends its ID (and data) if it enters a **power field** <br />- If a message **collides** with another transmission, **try resending** it later **after a random period**<br />- Collision Types: Partial or Complete <br />- throughput: **18.4%** | Reduce collision of ALOHA<br />- **Switch-off**: After a successful transmission a tag enters the quiet state <br />- **Slow down**: Reduce the frequency of tag responses <br />- **Carrier sense** : 1. No carrier sense possible (tags cannot hear each other); 2.Use **ACK signal** of the reader in communication with another tag; 3.Reader **broadcasts** a **MUTE** command to other tags if it interrogates one tag |
+| Slotted ALOHA        | - **"Reader-Talks-First"**: Use discrete timeslots (SOF, EOF)<br />- **A tag can only send at the start of a slot**<br />- **only complete collision**<br />- "Early end"<br />- **throughput**: 36.8% |                                                              |
+| Frame-slotted ALOHA  | - Group several slots into frames<br />- Only one tag transmission per frame<br />- Limits frequently responding tags<br />- Adaptive version: adjust the number of slots per frame | ![image-20181112133302034](assets/image-20181112133302034.png) |
+| Binary Tree Protocol | - Tree traversal algorithm (**depth first search**)<br />- "Reader Talks First", reader **boardcast** a request command with an ID as parameter<br />- Only tages with lower or equal ID respond<br />- tag is **remained quiet**(do no respond) if the tag is not the target one<br />- **repeat** until no collision occurs or all tags are quiet | ![image-20181112135701216](assets/image-20181112135701216.png) |
+
+
+
+
+
+### Pros and Cons
+
+| Advantages                                        | Disadvantages                                                |
+| ------------------------------------------------- | ------------------------------------------------------------ |
+| Very cheap, high volume, large variety            | No quality of service                                        |
+| Long industry experience                          | Only passive data acquisition (asymmetric communication)     |
+| Scanning even with high speeds possible (300km/h) | Possible interference with ISM bands                         |
+| No maintenance, simple to manage                  | No authentication:<br />- Readers can not sense tags if they do not reply<br />- Tags reply to any reader |
+|                                                   | No encryption:<br />- Evaesdropping possible                 |
+|                                                   | Man-in-the-middle attack                                     |
+
+
+
+### Applications
+
+##### Summary
+
+| Type           | Example                                                   | Risk                               |
+| -------------- | --------------------------------------------------------- | ---------------------------------- |
+| Alerting       | - Payment: RFID smartcards and electronic toll collection | - Security risk: denial of service |
+| Authentication | - E-passport and car keys                                 | - Security risk: forgery           |
+| Identification | - Like barcodes but more data and faster to process       | - Privacy risk: sniffing           |
+| Moiniting      | - Product tracking and inventory management               | - Privacy risk: tracking           |
+|                |                                                           |                                    |
+|                |                                                           |                                    |
+
+
+
+### Privacy
+
+- Unauthorized surveillance/monitor
+- Potential risks
+  - mis-scanning high value goods
+
+##### How to deal with them:
+
+- Killing (tag deactivation)
+  - damage the tags so that they cannot be used for furture usage (return defective goods, airline tickets)
+- User intervention
+  - Provide a button for user to press before reading tag(No protection against passive eavesdropping)
+- Silencing: metal lining
+  - Make radio of readers/tags do not work in some environment (RFID Blocking Passport Case)
+
+- Active jamming
+
+  - Device that broadcasts radio signals to block/disrupt RFID (make them unavailable)
+
+- Hash-locking
+
+  - lock tags with a mete ID y
+  - unlock by a one-way function (*y=h(x)*)
+  - Expensive since cryptographic operations are required 
+
+- Encrypting: silent tree walking
+
+  - Encrypt readers transmission: a passive eavesdropper cannot infer the tag IDs 
+
+- One time identifiers (pseudonym rotation) 
+
+  - Works only for tree-based scanning algorithms 
+  - A blocker tag forces a reader to sweep the very large space of all possible tag identifiers 
+
+- HIdden-blocker tags (used to protect your bank card in your pocket)
+
+- Keyless “Encryption”
+
+
+### RFID Authenticity
+
+### Threats
+
+- Cloning: copying existing tags
+- Forgery: creating new tags with a valid identity
+- Relabeling
+
+
+
+### Track & trace
+
+- Application anticipates tag movements, detects and reports  anomalies and duplicates 
+- Can protect both threats but with hindsight (after bad things)
+
+#### How to solve
+
+- Static authentication
+  - using digital signature
+  - Protects against forgery, but not cloning
+- Static authentication with public-key protocol
+  - Tag authenticates reader by public-key protocol
+  - Encrypts digital signature with reader’s public key
+
+
+
+### Security Schemes
+
+- Rolling code schemes (cheap)
+- Challenge-response protocols (expensive)
+
+
+
+
+### RFID Rights of consumers
+
+- To know whether products contain RFID tags 
+- To have RFID tags removed or deactivated when they purchase products 
+- To use RFID-enabled services without RFID tags 
+- To access an RFID tag's stored data 
+- To know when, where and why the tags are being read 
+
+
+
+###  RFID Future Directions
+
+- Super-distributed RFID infrastructures
+  - Massive number of tags are placed on an object
+  - Applications:
+    - Indoor localization and positioning
+    - Collaboration
+    - Distributed storage of information
 
 
 
@@ -567,36 +797,116 @@ C --> D(Meanings)
 
 ## Networks
 
-### [++]Digital Networks
+### Benefits of Digital signals
 
 - Efficiency
+  - Higher data transfer than analog networks 
+  - Enables compression for higher efficiency 
+  - Smaller power consumption 
 - Security
+  - Simple eavesdropping for analog signal (even for encrypted signals)
+- Degradation and restoration (Error correction)
+- Error detection
+- Features
+  - Caller ID and call answer, Data traffic 
+
+### 
+
+### Switch
+
+- Circuit switching
+- Packet switching
 
 
 
-### [++]Signal Propagation
+### Signal Propagation (distance ? )
+
+- **Transmission range**: Communication with low errors
+- **Detection range**: Detection but no communication (or with too many errors)
+- Interference range: Signal cannot be detected or signal is part of the  background noise 
+
+
+
+###  Issues in Wireless Transmission
+
+- Problems for wave propagation
+  - 反射(reflection): Large objects
+  - scattering 
+  - 衍射:signal deviation (diffraction) 
+  - 折射:signal change and reflection (refraction) 
+
+- Multipath propagation
+  - Signal takes different paths between sender and mobile device 
+
+
+
+### Multiplexing
 
 - Transmission Range
 
 
 
-### [++]Multiplexing
+### [++] Multiplexing
 
--  
+**Guard spaces**
 
+- Gap( can be time/frequency/code difference) between to two channels
 
-
-### Bluetooth
-
-
+- Reduce risk of interference between channels
 
 
+| Type                 | Definition                                                   | Advantages                                                   | Disadvantages                                                |
+| -------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Space (SDM)          |                                                              | Space channels physically apart to avoid interference        | Graph coloring problem(how to select channel between tow cells) |
+| FDM                  | Frequency Division Multiplexing                              | - No dynamic coordination required<br />- Can be used for analog networks | - waste of bandwidth if traffic distributed unevenly<br />- Guard Spaces |
+| TDM                  | Time Division Multiplexing<br />- A channel gets the whole spectrum for a short time<br />- All channels use same frequency at different times | - High throughput for many channels                          | - Precise clock synchronisation                              |
+| Combine of FDM & TDM | Each channel gets a certain frequency band for a certain amount of time | - Higher data rate<br />- more robust                        | - Precise clock synchronisation                              |
+| CDM                  | Code Division Multiplexing<br />- Each channel has a unique Code<br />- Channels are separated by codes, with guard spaces | - No coordination and synchronisation is required<br />- Bandwidth efficient | - Lower data rate                                            |
 
-### ZigBee
+
+
+### WPAN Standards
+
+#### Body Area Networks
+
+- Use natural electrical conductivity of the human body to transmit electronic data (2.4 KB/s up to 400 KB/s )
+- Applications:
+  - Car or phone recognizes a user
+  - Pay by touching a device in a bus
+  - Device configures itself through touch
 
 
 
-### AOVD
+#### Ultra Wide Band
+
+- Radio always transmits at 640 Mbps but maximum actual data rate is 480 Mbps due to error correction 
+- Applications: 
+  - Short distance compressed video transmission 
+  - Wireless printing and monitors
+  - [future] Precise location system and real time location system
+  - [future] Precision radar imaging technology, even through walls 
+- Security
+  - Stronger security than Bluetooth and WLAN 
+  - All devices have unique IDs 
+  - Cryptographic sequence number (avoid replay attack)
+
+
+
+#### Bluetooth (802.15.1)
+
+- Goal
+  - **Ad-hoc** wireless connectivity for electronic devices
+  - Low-cost replacement for wires
+
+- Features
+  - Short-range: 10 m – 100 m 
+- Networking
+  - Point to point 
+  - Point to multipoint (up to 8 devices)
+
+
+
+
 
 
 
