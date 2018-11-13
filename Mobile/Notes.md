@@ -609,8 +609,7 @@ C --> D(Meanings)
 | Query Sampling Attack                 | Can easily find a user (eg, A) from several different regions' user set information | (User A can be easily outleted)![image-20181111142920224](assets/image-20181111142920224.png) |
 | Query Tracking Attack                 | - Assumptions: continuous queries, some unchanged identity key <br />- Track the path of a user, which may be used to find out the destination of that user (using intersection) | ![image-20181111143533874](assets/image-20181111143533874.png) |
 | Maximum Movement Boundary(MMB) Attack | - Assumptions: continuous queries, unchanged identity key between two consecutive queries<br />- Can be used to fidn the approximate location of that user | ![image-20181111143932800](assets/image-20181111143932800.png) |
-| Query Trajectory Attack               | - Assumptions: continuous queries, continuous updates to ensure result is correct<br />- Can be used to intersect rectangles of two<br/>consecutive updates to
-refine the user location | ![image-20181111212715128](assets/image-20181111212715128.png) |
+| Query Trajectory Attack               | - Assumptions: continuous queries, continuous updates to ensure result is correct<br />- Can be used to intersect rectangles of two<br/>consecutive updates to refine the user location | ![image-20181111212715128](assets/image-20181111212715128.png) |
 | Context Inference(outdoor/indoor)     | - to get the transportation of a user<br />- prediction user's future route(based on history)<br />- predict home address/current location<br />- predict user's properties(age, work role, coffee/tea drinker, smoker...) |                                                              |
 | Protect your trajectory               | Moving kNN Queries<br />- moving k nearest neighbours queries<br />- Risk: track user's trajectory | parameters: <br />- k: the bigger the less accurate<br />    |
 
