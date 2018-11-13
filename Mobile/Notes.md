@@ -604,14 +604,14 @@ C --> D(Meanings)
 
 #### Location attacks
 
-| Attack Type                           | Description                                                  |                                                              |
-| ------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| Query Sampling Attack                 | Can easily find a user (eg, A) from several different regions' user set information | (User A can be easily outleted)![image-20181111142920224](assets/image-20181111142920224.png) |
-| Query Tracking Attack                 | - Assumptions: continuous queries, some unchanged identity key <br />- Track the path of a user, which may be used to find out the destination of that user (using intersection) | ![image-20181111143533874](assets/image-20181111143533874.png) |
-| Maximum Movement Boundary(MMB) Attack | - Assumptions: continuous queries, unchanged identity key between two consecutive queries<br />- Can be used to fidn the approximate location of that user | ![image-20181111143932800](assets/image-20181111143932800.png) |
-| Query Trajectory Attack               | - Assumptions: continuous queries, continuous updates to ensure result is correct<br />- Can be used to intersect rectangles of two<br/>consecutive updates to refine the user location | ![image-20181111212715128](assets/image-20181111212715128.png) |
-| Context Inference(outdoor/indoor)     | - to get the transportation of a user<br />- prediction user's future route(based on history)<br />- predict home address/current location<br />- predict user's properties(age, work role, coffee/tea drinker, smoker...) |                                                              |
-| Protect your trajectory               | Moving kNN Queries<br />- moving k nearest neighbours queries<br />- Risk: track user's trajectory | parameters: <br />- k: the bigger the less accurate<br />    |
+| Attack Type                                                  | Description                                                  |                                                              |
+| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Query Sampling Attack                                        | Can easily find a user (eg, A) from several different regions' user set information | (User A can be easily outleted)![image-20181111142920224](assets/image-20181111142920224.png) |
+| Query Tracking Attack                                        | - Assumptions: continuous queries, some unchanged identity key <br />- Track the path of a user, which may be used to find out the destination of that user (using intersection) | ![image-20181111143533874](assets/image-20181111143533874.png) |
+| Maximum Movement Boundary(MMB) Attack ( a kind of query tracking attack) | - Assumptions: continuous queries, unchanged identity key between two consecutive queries<br />- Can be used to fidn the approximate location of that user | ![image-20181111143932800](assets/image-20181111143932800.png) |
+| Query Trajectory Attack                                      | - Assumptions: continuous queries, continuous updates to ensure result is correct<br />- Can be used to intersect rectangles of two consecutive updates to refine the user location | ![image-20181111212715128](assets/image-20181111212715128.png) |
+| Context Inference(outdoor/indoor)                            | - to get the transportation of a user<br />- prediction user's future route(based on history)<br />- predict home address/current location<br />- predict user's properties(age, work role, coffee/tea drinker, smoker...) |                                                              |
+| Protect your trajectory                                      | Moving kNN Queries<br />- moving k nearest neighbours queries<br />- Risk: track user's trajectory | parameters: <br />- k: the bigger the less accurate<br />    |
 
 #### Metrics for Location Privacy
 
@@ -733,7 +733,7 @@ Used to solve collision problem (a read receives signal from sevaral different t
 | Long industry experience                          | Only passive data acquisition (asymmetric communication)     |
 | Scanning even with high speeds possible (300km/h) | Possible interference with ISM bands                         |
 | No maintenance, simple to manage                  | No authentication:<br />- Readers can not sense tags if they do not reply<br />- Tags reply to any reader |
-|                                                   | No encryption:<br />- Evaesdropping possible                 |
+|                                                   | No encryption:<br />- Eavesdropping possible                 |
 |                                                   | Man-in-the-middle attack                                     |
 
 
@@ -747,9 +747,7 @@ Used to solve collision problem (a read receives signal from sevaral different t
 | Alerting       | - Payment: RFID smartcards and electronic toll collection | - Security risk: denial of service |
 | Authentication | - E-passport and car keys                                 | - Security risk: forgery           |
 | Identification | - Like barcodes but more data and faster to process       | - Privacy risk: sniffing           |
-| Moiniting      | - Product tracking and inventory management               | - Privacy risk: tracking           |
-|                |                                                           |                                    |
-|                |                                                           |                                    |
+| Monitoring     | - Product tracking and inventory management               | - Privacy risk: tracking           |
 
 
 
@@ -864,7 +862,7 @@ Used to solve collision problem (a read receives signal from sevaral different t
 - Features
   - Caller ID and call answer, Data traffic 
 
-### 
+
 
 ### Switch
 
@@ -873,7 +871,7 @@ Used to solve collision problem (a read receives signal from sevaral different t
 
 
 
-### Signal Propagation (distance ? )
+### Signal Propagation (distance ? ) 
 
 - **Transmission range**: Communication with low errors
 - **Detection range**: Detection but no communication (or with too many errors)
@@ -891,12 +889,6 @@ Used to solve collision problem (a read receives signal from sevaral different t
 
 - Multipath propagation
   - Signal takes different paths between sender and mobile device 
-
-
-
-### Multiplexing
-
-- Transmission Range
 
 
 
@@ -964,7 +956,7 @@ Used to solve collision problem (a read receives signal from sevaral different t
   - File transfoer for mobile devices
 - Security
   - Authentication & data encryption\
-- Frequency hopping (调频技术)
+- Frequency hopping (跳频技术)
   - Packets are transmitted to a receiver over 79 hop frequencies in a pseudo random pattern 
   - Transmitter switches hop frequencies 1,600 times per second
 - Paring 
