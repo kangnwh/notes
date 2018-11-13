@@ -64,6 +64,61 @@
 
 
 
+
+
+## Challenages
+
+
+
+### (Wireless) Communication 
+
+- More frequent disconnections
+- Lower bandwidth
+- Higher Latency
+- Variation in available bandwidth
+- Complex network typology 
+- Increased risk
+
+
+
+![image-20181108105535516](assets/image-20181108105535516.png)
+
+
+
+### Mobility
+
+- Address Migration
+  - Mobile divices use different (IP) address
+  - Selective broadcast, central services, home base, forwarding pointers
+- Location Dependent Information
+  - Information request depends on the location of devices
+- Migration Locality
+  - Connections should be automatically migrated to a closer server (geographically) 
+
+
+
+### Portability
+
+- Energy
+  - Batteries - ~= 20% weights of a mobile device
+  - Power consumption ~= $CV^2F$
+    - $C$: capacitance can be reduced by **VLSI (??)** design
+    - $V$: can be reduced by smaller structure
+    - $F$: clock frequency
+- Risk to data
+  - easier to loos or damage in mobile devices
+- Resource-poor related to static devices that have the same budget
+
+
+
+### Social Impact
+
+- Privacy
+- Security
+- Behavior
+
+
+
 ## Technologies
 
 ### Physical
@@ -823,7 +878,7 @@ Used to solve collision problem (a read receives signal from sevaral different t
 
 - **Transmission range**: Communication with low errors
 - **Detection range**: Detection but no communication (or with too many errors)
-- Interference range: Signal cannot be detected or signal is part of the  background noise 
+- **Interference range**: Signal cannot be detected or signal is part of the  background noise 
 
 
 
@@ -903,86 +958,170 @@ Used to solve collision problem (a read receives signal from sevaral different t
 - Networking
   - Point to point 
   - Point to multipoint (up to 8 devices)
+- Applications
+  - Headsets for mobile phones
+  - Game/remote controllers
+  - Wireless keyboard/mouse
+  - File transfoer for mobile devices
+- Security
+  - Authentication & data encryption\
+- Frequency hopping (调频技术)
+  - Packets are transmitted to a receiver over 79 hop frequencies in a pseudo random pattern 
+  - Transmitter switches hop frequencies 1,600 times per second
+- Paring 
+  - Share a passkey (stored in file system instead of bluetooth chip)
+  - Device either requires pairing or asks whether a remote device can use its services 
+- Bluetooth vs. IrDA (infrared light)
+
+> ![image-20181112201510214](assets/image-20181112201510214.png)
 
 
 
+#### Piconets
 
+- Ad-hoc network of up to 8 active devices (3 bits address space, so only 8 devices available)
+  - One device acts as a master, the other devices as slaves
+  - Each active slave has a 3-bit active member address; up to 7 active slaves
+  - parked slaves: synced with master but **not active**
+    - A parked device has an 8-bit parked member address; up to 255 parked slaves 
+
+- Scatternets
+  - Connecting 2 (up to 10) piconets
+  - A device acts a master in one piconet and as a slave in another piconet
+
+
+
+### ZigBee (802.15.4, low rate WPAN)
+
+- Goal
+  - Wireless standard for **sensing** and **control** applications
+  - Highly **reliable** and **secure**, interoperable
+- Features
+  - Extremely low power (Designed for months to years on batteries)
+  - 200 Kbps maximum 
+  - Huge address space (64 bit IEEE address)
+  - 50m range (5-500m environment dependent)
+- Used in:
+  - Sensors, interactive toys, smart badges, remote controls, home automation 
+- Routing
+  - **AODV** 
+
+
+
+### Bluetooth vs. ZigBee
+
+![image-20181112205824416](assets/image-20181112205824416.png)
 
 
 
 ### [+++] Routing
 
+#### Routing Algorithms
+
+- Requirements
+  - small routing table
+  - Fastest, most reliable, highest throughput route
+  - Nodes can die, join/move and leave anytime
 
 
 
+#### Architecture
 
-## Challenages
+- Layered architecture
 
-
-
-### (Wireless) Communication 
-
-- More frequent disconnections
-- Lower bandwidth
-- Higher Latency
-- Variation in available bandwidth
-- Complex network typology 
-- Increased risk
+- Flat architecture
+- Hierarchical or clustered architecture
 
 
 
-![image-20181108105535516](assets/image-20181108105535516.png)
+#### Protocols
 
-
-
-### Mobility
-
-- Address Migration
-  - Mobile divices use different (IP) address
-  - Selective broadcast, central services, home base, forwarding pointers
-- Location Dependent Information
-  - Information request depends on the location of devices
-- Migration Locality
-  - Connections should be automatically migrated to a closer server (geographically) 
-
-
-
-### Portability
-
-- Energy
-
-  - Batteries - ~= 20% weights of a mobile device
-  - Power consumption ~= $CV^2F$
-    - $C$: capacitance can be reduced by **VLSI (??)** design
-    - $V$: can be reduced by smaller structure
-    - $F$: clock frequency
-
-- Risk to data
-
-  - easier to loos or damage in mobile devices
-
-- Resource-poor related to static devices that have the same budget
-
-
-
-
-### Social Impact
-
-- Privacy
-- Security
-- Behavior
+| Nouns                                                   | Description                                                  | Comment 1                                                    | Comment 2                                                    |
+| ------------------------------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Topology-based Rouing Protocol Categories               | - **Proactve protocols** : Compute routes before routing <br />- **Reactive protocols**: Discover routes on-demand<br />- **Hybrid protocols** : Compute routes once, then update |                                                              |                                                              |
+| Flooding (routing)                                      | Just broadcast (if not goal and TTL > 0)<br />Reactive protocol | - simple                                                     | - waste resource<br />- duplicate<br />                      |
+| Gossiping(limited broadcast)                            | broadcast only to a randomly selected neighbor               | - less duplicates                                            | - Long travel time for messages<br />- No delivery guarantee |
+| Radius Growth                                           | Smart version of flooding:<br />- with increasing TTL every round if destination is not found |                                                              |                                                              |
+| Source Routing                                          | - source nodes store (and only the ones they need ) the path to destination |                                                              | - not efficient if high mobility/ data rate                  |
+| DSR (Dynamic Source Routing)                            | - like ARP or CMP in IP<br />- Cached routing<br />- discovery path via **RREQ message** (with address of S and D and a unique identification of this message)<br />- route maintenance: ack, update if error | **Improvement**:<br />- Caching of routes(DSR)<br />- Local search (flooding with TTL + 1)<br />- Hierarchy of nodes<br />- Clustering<br />- Implicit acknowledgment |                                                              |
+| Improving Source Routing                                | - Local search                                               | - Cachingofroutes(DSR)                                       |                                                              |
+| Directed Diffusion (DD)                                 | - 一种基于查询的路由机制。汇聚(sink)节点通过兴趣消息(interest)发出查询任务，采用洪泛方式传播兴趣消息到整个区域的或部分区域内的所有传感器节点。兴趣消息用来表示查询的任务，表达网络用户对检测地区感兴趣的信息，例如检测区的温度、湿度和光照等环境信息。在兴趣消息传播的过程中，协议逐跳地在每个传感器节点上建立反向的从数据源到汇聚节点的数据传输梯度(gradient)。传感器节点将采集到的数据沿着梯度方向传送到汇聚节点。<br />- 定向扩散协议的任务是在传感器节点和sink节点之间建立梯度，以便可靠地传递数据。<br />[https://baike.baidu.com/item/定向扩散路由](https://baike.baidu.com/item/定向扩散路由) | - Interest Propaga/on<br />- Data Propagation<br />- Reinforcement (加强一条可用路线)<br />- Negative Reinforcement (切断错误加强的路线, 或者time out的路线)<br />-Extension: push diffusion (data from source actively) |                                                              |
+| DD Detail                                               | ![image-20181113105903586](assets/image-20181113105903586.png) |                                                              |                                                              |
+| Rumor Routing                                           | - agent based<br />- developed from DD<br />- used for small data transmission <br />- random send request instead of boardcasting (so route is not optimal)<br />- **Query flooding**(good for small count of queries) & e**vent flooding**(good for **large** count of queries)<br />![image-20181113111717951](assets/image-20181113111717951.png) | - low cost for building routing                              | - longer delay than DD<br />- no deliver guarantee<br />- performance depend on toplogoy |
+| LEACH(**Low-Energy Adap/ve Clustering Hierarchy**)      | - Goal: Minimize **energy** dissipa$on in SNs<br />- Architecture: Hierarchical protocol (randomly select node as cluster head and reselect periodically)<br />- States: **set-up** state(short, **select CH, CH boardcasts, Schedule Creation** ), **steady state**(long, for data transmission via **TDMA** **in same cluster**) <br />- different **CDMA** codes for different clusters<br />- Only CHs communicate with sink |                                                              | - “Hot Spot” Problem: congested, some node becomes too busy <br />- Stationary Sink (May be unpractical, )<br />- 1 hop neighbors(some node may not belong to any cluster?) |
+| Distance Vector Routing                                 | - proactive protocol<br />- each node has a routing table<br />- sync routing table with neighbours | ![image-20181113114719665](assets/image-20181113114719665.png) | ![image-20181113114726324](assets/image-20181113114726324.png) |
+| [-] AODV (ad-hoc on-demand DV) for **ZigBee**           | - reactive protocol<br />- **RREQ**: message to discover destination(route)<br />- **RREP**: message to reply<br />- **RRER**: error message | - Routing Table:<br />![image-20181113115355455](assets/image-20181113115355455.png) | ![image-20181113114951291](assets/image-20181113114951291.png) |
+| TEEN (Threshold senstive energy efficient network)      | - reactive protocol<br />- 持续监控,但是仅在数值突变时(主动)发送数据 | - good for time critical-applications<br />- less energy consumption | - not good for periodic monitor<br />- cannot detect important lost data |
+| APTEEN (AdaPtive)                                       | - extent TEEN to support both periodic and non-periodic (by sending data if no data was sent during the past **period** of time) | - less energy than LEACH but more than TEEN                  |                                                              |
+| SPIN (Sensor protocols for information via Negotiation) | 一种以数据为中心的自适应通信路由协议。它通过使用节点间的协商制度和资源自适应机制，解决了传统协议所存在的内爆，重叠以及盲目使用资源问题。 SPIN协议有 3 种数据包类型，即 ADV、REQ和 DATA。<br />- **ADV** 用于元数据的广播<br />- **REQ **用于请求发送数据<br />- **DATA **为传感器采集的数据包 | - send metadata pacakge(ADV) first, who interests send REQ to the sensor for that data<br /><br />- save energy |                                                              |
+| SPIN-metadata<br />SPIN-1<br />SPIN-2                   |                                                              |                                                              |                                                              |
 
 
 
 
 
+## Sensor Localisation 
+
+
+
+### Range-based methods
+
+- Absolute point-to-point distance estimates
+- Angle estimates
+- Atomic multilateration
+  -  Compute a node's location from 3 or more landmarks using distances
+
+
+
+| Method to get distance                           | Comment 1                                                    | Comment 2                                                    |
+| ------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Received Signal Strength Inverse (RSSI)          | Path loss model<br />![image-20181113142719722](assets/image-20181113142719722.png) | Simple, but **unreliable** due to **inaccurate** range estimates |
+| One Way TOA (Time On Arrival)                    | ![image-20181113142711049](assets/image-20181113142711049.png)<br />$Distance = (T_1-T_0) * speed$ | - accurate: about 10cm<br />- range: ten of meters<br />- need time sync between two nodes |
+| Round-trip TOA                                   | ![image-20181113142915529](assets/image-20181113142915529.png) | - No time synchronization required                           |
+| Same Frequency TDOA (Time Difference on Arrival) | Use two receivers and measure me difference to estimate the
+difference in distance<br />![image-20181113143026663](assets/image-20181113143026663.png)<br />![image-20181113143049185](assets/image-20181113143049185.png) | - calibration                                                |
+| Different Frequencies TDOA                       | - Use both wireless signal and ultrasound<br />![image-20181113143227147](assets/image-20181113143227147.png) | - Problem: Hardware cost                                     |
+| AOA (Angle on Arrival)                           | ![image-20181113143445013](assets/image-20181113143445013.png) | Unrealistic for most of WSN applications due to complex
+hardware and AOA estimation
+algorithms (不好测量, 还难算) |
+| 多边形计算                                       |                                                              |                                                              |
+| Collaborative Mul/lateration                     | - 当多个相邻的节点都不是konwn的, 并且每个节点都不能发现3+ known nodes<br />- 使用方程组,一起解<br />![image-20181113143800219](assets/image-20181113143800219.png) | 更难算了                                                     |
+
+
+
+### Range-free methods
+
+- more cost-effec$ve than range-based methods
+- less accurate than range-based methods
+
+
+
+| Method                               | Comment 1                                                    | Comment 2                                                    |
+| ------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Centroid Approach                    | <br />                                                       | ![image-20181113143948978](assets/image-20181113143948978.png)![image-20181113143924437](assets/image-20181113143924437.png)<br />包围这个unkown node的known nodes的平均值 |
+| DV-Hop (Distance Vector Hop)         | 使用Hop估算distance, 然后算location                          |                                                              |
+| APIT (Approximate Point in Triangle) | - area based algorithm<br />- intersection of all triangles<br />- PIT theory (If there is a direcHon in which M is moves away from points A, B, and C simultaneously, then M is outside of ∆ABC; otherwise, M is
+inside ∆ABC.)<br />- anchor tables | ![image-20181113144523518](assets/image-20181113144523518.png) |
+|                                      | ![image-20181113144919450](assets/image-20181113144919450.png) |                                                              |
+| ROCRSSI                              | - If B’s RSSI < S’s RSSI < C’s RSSI <br />- Then S is in ring <br />![image-20181113145138758](assets/image-20181113145138758.png) | ![image-20181113145213520](assets/image-20181113145213520.png) |
 
 
 
 
 
+### Location Verification
+
+#### SerLoc (via Different Frequencies TDOA)
+
+Idea: 跟verifier确认位置, 使用 Different frequencies TDOA
 
 
+
+#### Weaknesses
+
+- Requires extra hardware, i.e., ultrasonic channel
+- Valid nodes may respond late due to backlog
+- Not loca/on verifica/on but range verifica/on!
 
 
 
