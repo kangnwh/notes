@@ -22,11 +22,11 @@ dotnet add package MySql.Data
 1. Add your connection string in file `appsettings.json`
 
 ```json
-ConnectionStrings:{
+"ConnectionStrings":{
      "${ConnectionName}": "server=${server_ip};port=3306;database=${db_name};uid=${user};password=${password}"
 }
 ```
- 
+
 
 ## [Database First]
 
@@ -46,12 +46,17 @@ public class MobileDbContext : DbContext
 
 ##### Generate entity classes from exisiting database
 
-```
+```shell
 dotnet ef dbcontext -h
 dotnet ef dbcontext scaffold -h
 dotnet ef dbcontext scaffold -d -c 
 
+# my sql
 dotnet ef dbcontext scaffold -o Model "server=123.56.22.40;port=3306;database=sns;uid=sns;password=${your_pwd}" "Pomelo.EntityFrameworkCore.MySql"  --prefix-output
+
+# sql server
+dotnet ef dbcontext scaffold  "Data Source={db_ip};Initial Catalog={db_name};User ID={user_name};Password={user_pwd};" Microsoft.EntityFrameworkCore.SqlServer -d -c {ContextClassName} -o  {out_put_folder} -f
+
 ```
 
 **NOTE**: 
