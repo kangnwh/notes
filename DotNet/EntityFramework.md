@@ -15,7 +15,18 @@ dotnet add package Microsoft.EntityFrameworkCore.Sqlite
 ```shell
 dotnet add package MySql.Data.EntityFrameworkCore
 dotnet add package MySql.Data
+dotnet add package Pomelo.EntityFrameworkCore.MySql
 ```
+
+
+
+3. Sql Server
+
+```bash
+dotnet add package Microsoft.EntityFrameworkCore.SqlServer
+```
+
+
 
 #### DB Context connection string configuration
 
@@ -23,7 +34,8 @@ dotnet add package MySql.Data
 
 ```json
 "ConnectionStrings":{
-     "${ConnectionName}": "server=${server_ip};port=3306;database=${db_name};uid=${user};password=${password}"
+     "${mysql_connectstr}": "server=${server_ip};port=3306;database=${db_name};uid=${user};password=${password}",
+  "${sqlserver_connectstr}":"Data Source=luck-2.mysql.database.azure.com;Initial Catalog=lucky-dev;User ID=${userid};Password=${password};"
 }
 ```
 
