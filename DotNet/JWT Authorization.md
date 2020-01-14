@@ -8,7 +8,79 @@ dotnet new webapi -o $project_name
 
 
 
-## 2. Add JWT support
+## 2. ConfigurationHelper
+
+```c#
+using System;
+using System.Configuration;
+using System.Text;
+using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
+
+namespace LuckyCrateApi.Helper
+{
+    public class ConfigurationHelper 
+    {
+        public DbConfiguration DbConfiguration { set; get; }
+
+        public Security Security { set; get; }
+
+        public static ConfigurationHelper Current { get; private set; } = null;
+
+        public ConfigurationHelper() { }
+        
+        public static void SetConfiguration(IConfiguration _config) {
+
+            Current = new ConfigurationHelper
+            {
+                DbConfiguration = new DbConfiguration()
+                {
+                    connectString = _config["ConnectionStrings:luckydb"],
+                    //dbName = _config["GKBDB:Name"]
+                },
+                Security = new Security()
+            };
+            _config.GetSection("Security").Bind(Current.Security);
+
+        }
+
+        public static void SetConfiguration(ConfigurationHelper config)
+        {
+            Current = config;
+        }
+    }
+
+    public class Security 
+    { 
+        public string Issuer { set; get; }
+        public string Audience { set; get; }
+        public string Key { set; get; }
+        public int ExpiresInMinutes { set; get; }
+    }
+
+    public class DbConfiguration
+    {
+        public string connectString;
+        //public string dbName;
+    }
+  
+  // used for azure storage account
+  	public class AzureStorage
+    {
+        public string AccessKey  { set; get; }
+        public string BaseUrl  { set; get; }
+        public string Container  { set; get; }
+    }
+
+
+}
+```
+
+
+
+
+
+## 3. Add JWT support
 
 0. How it works (overview)
 
@@ -39,29 +111,68 @@ dotnet add package JWT
 ####NOTE: `ValidateLifetime` must be cared, the default value is `true`, so that when generate token, an `expiredDate` must be provided
 
 ```c#
-services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+ConfigurationHelper.SetConfiguration(this.Configuration);
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(cfg =>
                 {
                     cfg.TokenValidationParameters = new TokenValidationParameters()
                     {
                         ValidateIssuer = true,
-                        ValidIssuer = Configuration["Security:Tokens:Issuer"],
+                        ValidIssuer = ConfigurationHelper.Current.Security.Issuer,
                         ValidateAudience = true,
-                        ValidAudience = Configuration["Security:Tokens:Audience"],
+                        ValidAudience = ConfigurationHelper.Current.Security.Audience,
                         ValidateIssuerSigningKey = true,
                         ValidateLifetime = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Security:Tokens:Key"])),
-                    
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(ConfigurationHelper.Current.Security.Key)),
+
                     };
                 });
 ```
 
 
 
-3. Configure `app` to use `UseAuthentication`
+3. Configure `Startup.cs/Configure()` to use `UseAuthentication`
 
 ```c#
- app.UseAuthentication();
+public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+                // Enable middleware to serve generated Swagger as a JSON endpoint.
+                app.UseSwagger();
+
+                // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), 
+                // specifying the Swagger JSON endpoint.
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                });
+                
+                app.UseCors("MyPolicy");
+
+            }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+                app.UseHttpsRedirection();
+            }
+
+            
+            app.UseStaticFiles();
+//            app.UseCookiePolicy();
+            app.UseAuthentication();
+
+            
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
+            });
+        }
 ```
 
 
@@ -70,61 +181,50 @@ services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 ```json
 "Security":{
-    "Tokens":{
       "Issuer":"localhost:5001",
       "Audience":"localhost:5001",
       "Key":"@#$!$RQFWE%T$^Y^*%$#@@$#RDFA#$"
-    }
   }
 ```
 
 
 
-5. Add `LoginController` to verify user login and generate/response token back to user
+5. Extension to generate token back to user
 
 ```c#
-
-public IActionResult Login([FromBody] LoginForm loginUser ){
-            if(!ModelState.IsValid){
-                return BadRequest(ModelState);
-            }
-            // string hashedPw = Crypto.HashPassword(loginUser.Password);
-            // string username = loginUser.Username;
-            // Debug.WriteLine(message: $"user:{username}");
-            // Debug.WriteLine(message: $"password:{hashedPw}");
-
-            User user = db.User.Where( u => u.Username == loginUser.Username ).FirstOrDefault();
-
-            if(user == null){
-                return BadRequest("Invalid username");
-            }
-
-            if (!Crypto.VerifyHashedPassword(user.Password,loginUser.Password)){
-                return BadRequest("Invalid password");
-            }
-
+public static class AuthorizationHelper
+    {
+        public static string GenerateJwt(this User user)
+        {
 
             // If user is verified, add claims into token
-            List<Claim> userInfoClaims = new List<Claim>();
+            List<Claim> userInfoClaims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.Username),
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+            };
 
-            userInfoClaims.Add(new Claim(ClaimTypes.Name,user.Username));
-            userInfoClaims.Add(new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()));
-            
-                
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Security:Tokens:Key"]));
+
+            //var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(ConfigurationHelper.Current.Security.Key));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(ConfigurationHelper.Current.Security.Key));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
-                claims:userInfoClaims,
-                issuer:configuration["Security:Tokens:Issuer"],
-                audience:configuration["Security:Tokens:Audience"],
-                expires: DateTime.Now.AddMinutes(5),
-                signingCredentials:creds
+                claims: userInfoClaims,
+                issuer: ConfigurationHelper.Current.Security.Issuer,//configuration["Security:Tokens:Issuer"],
+                audience: ConfigurationHelper.Current.Security.Audience,// configuration["Security:Tokens:Audience"],
+                expires: DateTime.Now.AddDays(1),
+                signingCredentials: creds
                 );
 
             var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
-            return Ok(tokenString);
+            return tokenString;
+
         }
+
+    }
+
+    
 ```
 
 
@@ -132,35 +232,21 @@ public IActionResult Login([FromBody] LoginForm loginUser ){
 6. Get `claims` from `token`
 
 ```c#
-namespace MobileBackend.Util
-{
-    public static class MyExtensions
+public static class IdentityExtension
     {
-        public static int CurrentUserId(this ClaimsPrincipal user )
+        public static int CurrentUserId(this ClaimsPrincipal user)
         {
             var userIdClaim = user.FindFirst(ClaimTypes.NameIdentifier);
-            if(userIdClaim == null) //null
+            if (userIdClaim == null) //null
             {
                 return -1;
             }
-            
+
             var userId = int.Parse(userIdClaim.Value);
             return userId;
         }
 
-        public static string CurrentUserName(this ClaimsPrincipal user )
-        {
-            var userIdClaim = user.FindFirst(ClaimTypes.Name);
-            if(userIdClaim == null) //null
-            {
-                return null;
-            }
-            
-            return userIdClaim.Value;
-        }
-
     }
-}
 ```
 
 
